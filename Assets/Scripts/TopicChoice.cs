@@ -17,9 +17,20 @@ public class TopicChoice : MonoBehaviour {
 		StartCoroutine(DelayTopic(sceneName));
 	}
 
+	public void ChangeWin(string sceneName) 
+	{
+		StartCoroutine (DelayWin (sceneName));
+	}
+
 	IEnumerator DelayTopic (string sceneName)
 	{
 		yield return new WaitForSeconds (0.2f);
+		SceneManager.LoadScene (sceneName);
+	}
+
+	IEnumerator DelayWin (string sceneName)
+	{
+		yield return new WaitForSeconds (2.0f);
 		SceneManager.LoadScene (sceneName);
 	}
 }

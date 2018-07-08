@@ -19,7 +19,8 @@ public class LevelControlScript : MonoBehaviour {
 	// Variable name to pass to Player Prefs meaning which variable to set as got
 	// Adjustable in inspector depending on current scene and trophy
 	// you earn (if you do)
-	public string whichCupGot = "Cup1Got";
+	//public string whichCupGot = "Cup1Got";
+	public string whichCupGot;
 
 	// Use this for initialization
 	void Start () {
@@ -58,11 +59,11 @@ public class LevelControlScript : MonoBehaviour {
 		if (Cupgot == 1)
 
 			// then you proceed to next level
-			Invoke ("LoadNextLevel", 1f);
+			Invoke ("LoadNextLevel", 0.2f);				// fixed for returning to menu
 
 		// if you don't have current trophy yet
 		else
-			// then GetTrophy method is invoked in 1 second
+			// then getTrophy method is invoked in 1 second
 			Invoke ("GetTrophy", 1f);
 	}
 
@@ -102,13 +103,24 @@ public class LevelControlScript : MonoBehaviour {
 			PlayerPrefs.SetInt (whichCupGot, 1);
 
 		// Invoke LoadNextLevel method in 1 second
-		Invoke ("LoadNextLevel", 1f);
+		Invoke ("DelayNext", 0.1f);
 	}
 
 	// Method loads next level depending on current scenes build index
 	void LoadNextLevel()
 	{
-		SceneManager.LoadScene (currentSceneIndex + 1);
+		if (currentSceneIndex % 5 == 1)
+			Invoke ("DelayNext", 0.1f);
+		else
+			SceneManager.LoadScene (currentSceneIndex + 1);
+		//SceneManager.LoadScene("WinScene");
+		//StartCoroutine(DelayNext());
+	}
+
+	IEnumerator DelayNext ()
+	{
+		yield return new WaitForSeconds (0.1f);
+		SceneManager.LoadScene ("WinScene");
 	}
 
 	// Method loads MainMenu scene
